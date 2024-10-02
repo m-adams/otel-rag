@@ -33,7 +33,7 @@
 
 ## Optimization of APM
 1. **Improve the trace**: Manually specify some spans. Look through the important parts of the code to find the commented span definitions.
-2. **Uncomment the span definitions**: Run the `start-app-with-otel.sh` script to start the application (don't forget to comment the `with True:` block which handles indent changes in the code).
+2. **Uncomment the span definitions**: Run the `start-app-with-otel.sh` script to start the application (don't forget to comment the `if True:` block which handles indent changes in the code).
 3. **Interact with the chatbot**: Have a few conversations, including a question that will search Elastic.
 4. **Check Kibana**: Go to the APM section to see the spans you defined in the code.
 
