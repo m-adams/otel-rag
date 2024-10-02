@@ -74,11 +74,14 @@ def search(query_text):
             document = hit.get('_source', {})
             document_id = hit.get('_id', 'Unknown')
 
+            result={"type":"search-result","id":document_id}
+
             # Build context from specified fields
             context_parts = []
             for field in CONTEXT_FIELDS:
                 value = document.get(field)
                 if value:
+                    result[field]=value
                     context_parts.append(f"{field}: {value}")
                 else:
                     logger.warning(f"Field '{field}' is missing in the document.")
@@ -87,4 +90,5 @@ def search(query_text):
     except Exception as e:
         logger.error(f"An error occurred during the search: {e}")
         context = "An error occurred during the search. Please try again later."
-    return context
+    #return context
+    return result

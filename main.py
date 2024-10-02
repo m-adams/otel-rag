@@ -136,7 +136,7 @@ def chat(user_input):
 
     user_reply = False
     while user_reply == False:
-
+        reference_doc_id = None
         # manual opentelemetry span creation
         with tracer.start_as_current_span("call_llm"):
             response = client.chat.completions.create(
@@ -164,7 +164,7 @@ def chat(user_input):
             ############################
 
             #with tracer.start_as_current_span(function_name):
-            with True: # this is a placeholder for the manual span
+            if True: # this is a placeholder for the manual span comment this if you uncomment the trace line
                 function = function_functions[function_name]
                 response = function(**function_args)
             messages.append(
@@ -183,6 +183,8 @@ def chat(user_input):
                     "name": function_name, 
                     "content": f'{{"result": {str(response)} }}'}
             )
+            if isinstance(response, dict) and "type" in response and response["type"] == "search-result":
+                reference_doc_id = response["id"]
         else:
             user_reply = True
             response = choice.message.content
