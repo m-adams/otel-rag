@@ -34,8 +34,8 @@ Observability is extremely important in RAG architectures for a number of reason
 
 1. Clone the repository:
     ```sh
-    git clone https://github.com/yourusername/your-repo.git
-    cd your-repo
+    git clone https://github.com/m-adams/otel-rag.git
+    cd otel-rag
     ```
 
 2. Create and activate a virtual environment:
@@ -43,22 +43,24 @@ Observability is extremely important in RAG architectures for a number of reason
     python -m venv venv
     source venv/bin/activate  # On Windows use `venv\Scripts\activate`
     ```
+    In VS Code cmd+p to launch the command pallet and select Python: Create virtual environment
 
-3. Install the dependencies:
+3. Check the shell scripts are executable:
     ```sh
-    pip install -r requirements.txt
+    chmod +x ./*.sh
     ```
 
-4. Set up environment variables:
+4. Setup the environment using the script:
+    ```sh
+    ./setup.sh
+    ```
+    
+5. Set up environment variables:
     ```sh
     cp .example-env .env
     # Edit .env to include your specific configuration
     ```
 
-5. Check the shell scripts are executable:
-    ```sh
-    chmod +x ./*.sh
-    ```
 
 ## Usage
 
@@ -68,6 +70,9 @@ Observability is extremely important in RAG architectures for a number of reason
     ```
 
 2. Interact with the chat bot through the provided interface.
+
+## Lab Instructions
+To walk through the lab to instrument the application with OpenTelemetry, see the [LAB_INSTRUCTIONS.md](LAB_INSTRUCTIONS.md) file.
 
 ## Contributing
 
