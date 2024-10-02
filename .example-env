@@ -1,0 +1,25 @@
+ELASTICSEARCH_HOST=# Elasticsearch url with port e.g. .es.io:9243
+ELASTICSEARCH_API_KEY=
+ELASTICSEARCH_INDEX=
+CONTEXT_FIELDS=title,body_content # Example fields
+
+ASSISTANT_NAME=SA Chat
+
+AZURE_OPENAI_ENDPOINT=
+AZURE_OPENAI_API_KEY=
+AZURE_OPENAI_DEPLOYMENT_NAME=
+AZURE_OPENAI_API_VERSION=2023-05-15
+
+# OpenTelemetry Configuration
+
+#APM Server url with port e.g. es.io:443
+OTEL_EXPORTER_OTLP_ENDPOINT=
+# Elastic APM Setup Page -> Otel copy header and url encode it e.g. "Authorization=Bearer%20blahblahblah"
+OTEL_EXPORTER_OTLP_HEADERS="Authorization=Bearer"
+OTEL_METRICS_EXPORTER="otlp"
+OTEL_LOGS_EXPORTER="otlp"
+OTEL_RESOURCE_ATTRIBUTES="service.name=o11y-rag,service.version=1.0,deployment.environment=development"
+ELASTIC_OTEL_SYSTEM_METRICS_ENABLED=true
+OTEL_PYTHON_LOGGING_AUTO_INSTRUMENTATION_ENABLED=true
+OTEL_PYTHON_LOG_CORRELATION=true
+OTEL_METRIC_EXPORT_INTERVAL=5000

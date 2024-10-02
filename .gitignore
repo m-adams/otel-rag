@@ -1,0 +1,7 @@
+*.pkl
+*deleteme*
+.env
+,venv
+.cache*
+*.pyc
+*.log
