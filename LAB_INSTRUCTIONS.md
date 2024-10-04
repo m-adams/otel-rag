@@ -12,7 +12,7 @@
 3. **Note down the Azure API key for the OpenAI model**.
 4. **Configure your environment variables**: Set these in the `.env` file.
 5. **Configure the `corpus_description.txt` file**: Provide a description of the documents you want to search.
-6. **Modify the `search_template.json` file**: Adjust this file to search your documents. You might want to prototype this using the Playground in Kibana.
+6. **Modify the `query_template.json` file**: Adjust this file to search your documents. You might want to prototype this using the Playground in Kibana.
 
 ## Familiarization
 1. **Open `start-app.sh`**: Set the log level to `ERROR` to disable most logs.
@@ -36,6 +36,8 @@
 2. **Uncomment the span definitions**: Run the `start-app-with-otel.sh` script to start the application (don't forget to comment the `if True:` block which handles indent changes in the code).
 3. **Interact with the chatbot**: Have a few conversations, including a question that will search Elastic.
 4. **Check Kibana**: Go to the APM section to see the spans you defined in the code.
+5. **Install OpenTelemetry Instrumentation for OpenAI**: Run `pip install opentelemetry-instrumentation-openai` to add OpenTelemetry support for OpenAI API calls.
+6. **Check the improved trace**: Run the `start-app-with-otel.sh` script to start the application. Generate some traffic and then check the waterfall for your improved trace to see the details of the OpenAI API call.
 
 ## Audit Logging
 1. **Enhance audit logging**: Improve the existing simple audit log by adding more information.

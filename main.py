@@ -1,5 +1,42 @@
 # main.py
 
+############################################
+# Introduction
+############################################
+
+"""
+This application is a chat-based assistant that interacts with users through the command line.
+It leverages Azure OpenAI for generating responses and OpenTelemetry for tracing and logging.
+The application performs the following high-level tasks:
+
+1. **Configuration and Setup**:
+    - Loads environment variables from a `.env` file.
+    - Sets up OpenTelemetry for tracing.
+    - Configures logging.
+    - Initializes the Azure OpenAI client.
+
+2. **Function Loading**:
+    - Dynamically loads functions from the `llm_functions` module.
+    - Stores function definitions and their corresponding implementations.
+
+3. **Chat Interaction**:
+    - Maintains a conversation history.
+    - Handles user input and generates responses using Azure OpenAI.
+    - Supports function calls within the chat, dynamically invoking the appropriate functions.
+
+4. **User Management**:
+    - Prompts the user for their name and saves it in a pickle file for future sessions.
+    - Greets returning users and maintains a personalized experience.
+
+5. **Main Loop**:
+    - Continuously prompts the user for input until they choose to exit.
+    - Processes each input, generates a response, and prints it in a formatted manner.
+
+The main functions in the application are:
+- `print_pretty_response(response)`: Formats and prints the assistant's response.
+- `chat(user_input)`: Handles the interaction with the user, including sending input to Azure OpenAI and processing the response.
+- `main()`: Sets up the argument parser, configures logging, handles user interaction, and manages the main chat loop.
+"""
 
 ############################################
 # Standard Import Libraries
@@ -278,7 +315,7 @@ def main():
         print_pretty_response(f"Welcome back, {user_name}!")
 
     # Print a helpful message to the user
-    print_pretty_response(f"How can I assist you today? (Type 'exit' or 'quit' to end the chat./\nIf you aren't sure what to ask me just ask 'What can you do?')")
+    print_pretty_response(f"How can I assist you today? (Type 'exit' or 'quit' to end the chat./\nIf you aren't sure what to ask me just ask 'What can you do?' or 'Is it raining where I am?')")
 
     ############################
     # Main chat loop
