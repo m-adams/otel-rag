@@ -55,11 +55,12 @@ Observability is extremely important in RAG architectures for a number of reason
     ./setup.sh
     ```
     
-5. Set up environment variables:
-    ```sh
-    cp .example-env .env
-    # Edit .env to include your specific configuration
-    ```
+5. COnfigure the environment:
+    Configure the following files:
+    - '.env' 
+    - 'query_templates.json'
+    - 'corpus_description.txt'
+    
 
 
 ## Usage

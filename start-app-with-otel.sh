@@ -2,14 +2,27 @@
 
 # Exit immediately if a command exits with a non-zero status.
 set -e
-# Export OTEL environment variables from .env file
-if [ -f .env ]; then
-    # Export variables that start with OTEL, ignoring lines that are comments or empty
-    export $(grep -v '^#' .env | grep 'OTEL' | xargs)
-else
+
+# Check if .env file exists
+if [ ! -f .env ]; then
     echo ".env file not found!"
     exit 1
 fi
+
+# Loop through each line in the .env file
+while IFS= read -r line; do
+    # Strip leading and trailing whitespace from the line
+    line=$(echo "$line" | xargs)
+    if [[ -n "$line" && ! "$line" =~ ^# ]]; then
+        # Extract KEY and VALUE from the line
+        KEY=$(echo "$line" | cut -d '=' -f 1)
+        VALUE=$(echo "$line" | cut -d '=' -f 2-)
+        if [[ "$KEY" == *OTEL* ]]; then
+            VALUE=$(echo "$VALUE" | sed 's/^"//;s/"$//')
+            VALUE="$VALUE"
+            export "$KEY=$VALUE"
+        fi  fi
+done < .env
 
 # Verify that essential environment variables are set
 : "${OTEL_RESOURCE_ATTRIBUTES:?Need to set OTEL_RESOURCE_ATTRIBUTES in .env}"

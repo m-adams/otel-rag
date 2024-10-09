@@ -45,6 +45,7 @@ import os
 import logging
 import json
 import argparse
+import pprint
 from dotenv import load_dotenv
 from openai import AzureOpenAI
 
@@ -199,7 +200,7 @@ def chat(user_input):
             ############################
             # Improve tracing
             ############################
-
+            # Hint: Add a manual span for each function call
             #with tracer.start_as_current_span(function_name):
             if True: # this is a placeholder for the manual span comment this if you uncomment the trace line
                 function = function_functions[function_name]
@@ -221,16 +222,22 @@ def chat(user_input):
                     "content": f'{{"result": {str(response)} }}'}
             )
             if isinstance(response, dict) and "type" in response and response["type"] == "search-result":
+                # HINT: *cough* audit log *cough*
                 reference_doc_id = response["id"]
         else:
             user_reply = True
-            response = choice.message.content
+            user_response = choice.message.content
 
             ############################
             # Audit log
             ############################
-            # Log the user's input and the response for auditing purposes
+            # Hint: Log the user's input and the response for auditing purposes
             # Look at what is available to log and create a rich audit log
+
+            # Let's print out the response datastructure so we can see what info we might want to add to the audit log.
+            # Uncomment these lines to see the datastructure
+            #print("Response datastructure:")
+            #print(response.model_dump_json(indent=3))
 
             audit_message = f'User {user_name} asked {user_input}'
             audit_context = {}
@@ -240,12 +247,28 @@ def chat(user_input):
 
             logger.info(audit_message,extra=audit_context)
 
+            ############################
+            # Add events to the trace
+            ############################
+            # Another way to pass etra information is to us events on the span
+            # This is very similar to writing a log but is specific to otel
+            # Add a span event for the user interaction
+            current_span = trace.get_current_span()
+            current_span.add_event(
+                "User interaction",
+                {
+                    "user_name": user_name,
+                    "user_input": user_input,
+                    "response": user_response,
+                    "reference_doc_id": []
+                }
+            )
 
             if response == None:
                 print("Something went wrong")
                 print(choice)
                 response = "Something went wrong"
-    return response
+    return user_response
 
 
 def main():

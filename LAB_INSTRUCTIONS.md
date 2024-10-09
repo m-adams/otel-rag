@@ -25,11 +25,11 @@
 2. **Run the `start-app.sh` script**: This will start the application.
 3. **Interact with the chatbot**: Have a few conversations, including a question that will search Elastic.
 4. **Observe the logs**: Notice both the logs in `main` as well as the libraries being printed to the console along with the chat messages.
-5. **Configure OpenTelemetry**: Set it up to send logs to Elastic.
+5. **Configure OpenTelemetry**: We have already set the configuration in our .env file so lets enable OpenTelemetry.
 6. **Review `start-app-with-otel.sh`**: See how the OTEL environment variables are set and how auto instrumentation is used to send logs and traces to Elastic.
 7. **Run the `start-app-with-otel.sh` script**: This will start the application.
-8. **Interact with the chatbot**: Have a few conversations, including a question that will search Elastic.
-9. **Check Kibana**: Go to the APM section to see traces and logs from the chatbot.
+8. **Interact with the chatbot**: Have a few conversations, including a question that will search Elastic. Try "is it raining where I am?".
+9. **Check Kibana**: Go to the APM section to see metrics, traces and logs from the chatbot.
 
 ## Optimization of APM
 1. **Improve the trace**: Manually specify some spans. Look through the important parts of the code to find the commented span definitions.

@@ -1,7 +1,14 @@
 *.pkl
 *deleteme*
+.env-*
 .env
 ,venv
 .cache*
 *.pyc
 *.log
+corpus_description.txt
+query_template.json
+environments/*
+!environments/README.md
+corpus_description.txt
+query_template.json
