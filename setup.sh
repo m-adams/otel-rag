@@ -22,18 +22,20 @@ opentelemetry-bootstrap --action=install
 # Elasticsearch is now natively supported so this causes a warning message
 pip uninstall -y opentelemetry-instrumentation-elasticsearch
 
-# List of example files and their corresponding real filenames
-declare -A files=(
-    ["example.corpus_description.txt"]="corpus_description.txt"
-    ["example.env"]=".env"
-    ["example.query_template.json"]="query_template.json"
-)
+# Check and copy example.corpus_description.txt to corpus_description.txt
+if [ ! -f corpus_description.txt ] && [ -f example.corpus_description.txt ]; then
+    cp example.corpus_description.txt corpus_description.txt
+    echo "Copied example.corpus_description.txt to corpus_description.txt"
+fi
 
-# Copy example files to their real filenames if they don't exist
-for example_file in "${!files[@]}"; do
-    real_file="${files[$example_file]}"
-    if [ ! -f "$real_file" ] && [ -f "$example_file" ]; then
-        cp "$example_file" "$real_file"
-        echo "Copied $example_file to $real_file"
-    fi
-done
+# Check and copy example.env to .env
+if [ ! -f .env ] && [ -f example.env ]; then
+    cp example.env .env
+    echo "Copied example.env to .env"
+fi
+
+# Check and copy example.query_template.json to query_template.json
+if [ ! -f query_template.json ] && [ -f example.query_template.json ]; then
+    cp example.query_template.json query_template.json
+    echo "Copied example.query_template.json to query_template.json"
+fi
