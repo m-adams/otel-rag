@@ -1,0 +1,17 @@
+{
+    "description": "Ingest pipeline to extract attachment content",
+    "processors": [
+      {
+        "attachment": {
+          "field": "data",
+          "remove_binary": true
+        }
+      },
+      {
+        "set": {
+          "field": "content",
+          "copy_from": "attachment.content"
+        }
+      }
+    ]
+  }

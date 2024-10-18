@@ -12,7 +12,7 @@ logger = logging.getLogger()
 
 
 # Load the corpus description
-with open("corpus_description.txt", "r") as file:
+with open("./config/corpus_description.txt", "r") as file:
     corpus_description = file.read().strip()
 
 description ="The function searches an elasticsearch index to help provide accurate and up to date information to the user and returns the contents of the most relevant documents. The description of the corpus is: "+ corpus_description
@@ -35,7 +35,7 @@ def load_query_template():
     """
     Load the Elasticsearch query template from a JSON file.
     """
-    with open("query_template.json", "r") as file:
+    with open("./config/query_template.json", "r") as file:
         template = json.load(file)
     return template
 
@@ -76,19 +76,27 @@ def search(query_text):
 
             result={"type":"search-result","id":document_id}
 
-            # Build context from specified fields
-            context_parts = []
-            for field in CONTEXT_FIELDS:
-                value = document.get(field)
-                if value:
-                    result[field]=value
-                    context_parts.append(f"{field}: {value}")
+            # We need to test for inner_hits. If we find one we will just take the content in the hit
+            # Inner hits are used by semantic_text which chunks the document
+            if "inner_hits" in hit.keys():
+                inner_hit = hit["inner_hits"][ELASTICSEARCH_INDEX+".content"]["hits"]["hits"][0]
+                document = inner_hit.get('_source', {})
+                # By default it uses "text" as the key for the content
+                if "text" in document.keys():
+                    result["text"]=document["text"]
                 else:
-                    logger.warning(f"Field '{field}' is missing in the document.")
-            if context_parts:
-                context = "\n".join(context_parts)
+                    logger.warning(f"Field 'text' is missing in the inner_hit.")
+            else: 
+            #    Build context from specified fields
+                context_parts = []
+                for field in CONTEXT_FIELDS:
+                    value = document.get(field)
+                    if value:
+                        result[field]=value
+                        context_parts.append(f"{field}: {value}")
+                    else:
+                        logger.warning(f"Field '{field}' is missing in the document.")
     except Exception as e:
         logger.error(f"An error occurred during the search: {e}")
-        context = "An error occurred during the search. Please try again later."
-    #return context
+        result = "An error occurred during the search. Please try again later."
     return result

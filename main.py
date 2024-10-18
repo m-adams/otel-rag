@@ -88,7 +88,7 @@ for submodule in iter_modules(getattr(llm_functions,"__path__")):
 ############################################
 # Load the configuration from the .env file
 ############################################
-load_dotenv(override=True)
+load_dotenv(dotenv_path="./config/.env", override=True)
 
 ASSISTANT_NAME = os.getenv("ASSISTANT_NAME")
 AZURE_OPENAI_ENDPOINT = os.getenv("AZURE_OPENAI_ENDPOINT")
@@ -112,7 +112,7 @@ api_key=AZURE_OPENAI_API_KEY)
 user_name = None
 messages = []
 # Initialise the message list
-with open("system_prompt.txt", "r") as file:
+with open("./config/system_prompt.txt", "r") as file:
     system_prompt = file.read().strip()
 messages.append({
     "role": "system",
@@ -201,8 +201,8 @@ def chat(user_input):
             # Improve tracing
             ############################
             # Hint: Add a manual span for each function call
-            #with tracer.start_as_current_span(function_name):
-            if True: # this is a placeholder for the manual span comment this if you uncomment the trace line
+            with tracer.start_as_current_span(function_name):
+            #if True: # this is a placeholder for the manual span comment this if you uncomment the trace line
                 function = function_functions[function_name]
                 response = function(**function_args)
             messages.append(

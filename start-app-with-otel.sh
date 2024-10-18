@@ -4,7 +4,7 @@
 set -e
 
 # Check if .env file exists
-if [ ! -f .env ]; then
+if [ ! -f config/.env ]; then
     echo ".env file not found!"
     exit 1
 fi
@@ -22,13 +22,12 @@ while IFS= read -r line; do
             VALUE="$VALUE"
             export "$KEY=$VALUE"
         fi  fi
-done < .env
+done < config/.env
 
 # Verify that essential environment variables are set
 : "${OTEL_RESOURCE_ATTRIBUTES:?Need to set OTEL_RESOURCE_ATTRIBUTES in .env}"
 : "${OTEL_EXPORTER_OTLP_ENDPOINT:?Need to set OTEL_EXPORTER_OTLP_ENDPOINT in .env}"
 : "${OTEL_EXPORTER_OTLP_HEADERS:?Need to set OTEL_EXPORTER_OTLP_HEADERS in .env}"
-
 
 echo "Starting the application with OpenTelemetry instrumentation..."
 

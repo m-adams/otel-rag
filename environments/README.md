@@ -4,13 +4,13 @@ This folder is intended for maintaining multiple configurations. You can place y
 
 ## Usage
 
-1. Place your configuration files in this directory.
-2. Create symbolic links to these files in the appropriate locations.
+1. Place your configuration files in this directory in a sub directory.
+2. Create symbolic links for your config folder to the directory you are using.
 
 ## Example
 
 ```sh
-ln -s /path/to/this/folder/config-file /path/to/symlink
+ln -s /path/to/this/folder/ /path/to/symlink
 ```
 
 ## Note
