@@ -40,5 +40,4 @@ opentelemetry-bootstrap --action=install
 pip uninstall -y opentelemetry-instrumentation-elasticsearch
 
 
-# Copy everything from ./example-config folder to the config folder
-cp -r ./example-config/* ./config/
+cp -rn ./example-config/.* ./example-config/* ./config/
