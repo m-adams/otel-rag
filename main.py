@@ -104,21 +104,22 @@ CONTEXT_FIELDS = os.getenv("CONTEXT_FIELDS", "content")  # Default to 'content' 
 ############################################
 # Azure OpenAI setup
 ############################################
+############################################
 if OPENAI_API_KEY:
+    logger.info("Using OpenAI")
     AZURE_OPENAI_DEPLOYMENT_NAME = OPENAI_MODEL
     if OPENAI_ENDPOINT:
-        client = OpenAI(api_key=OPENAI_API_KEY, api_base=OPENAI_ENDPOINT)
+        client = OpenAI(api_key=OPENAI_API_KEY)
+        client.api_base = OPENAI_ENDPOINT
     else:
         client = OpenAI(api_key=OPENAI_API_KEY)
 else:
+    logger.info("Using Azure OpenAI")
     client = AzureOpenAI(
         azure_endpoint=AZURE_OPENAI_ENDPOINT,
         api_version=AZURE_OPENAI_API_VERSION,
         api_key=AZURE_OPENAI_API_KEY
     )
-client = AzureOpenAI(azure_endpoint=AZURE_OPENAI_ENDPOINT,
-api_version=AZURE_OPENAI_API_VERSION,
-api_key=AZURE_OPENAI_API_KEY)
 
 
 ############################################
