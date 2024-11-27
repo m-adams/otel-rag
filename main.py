@@ -107,10 +107,23 @@ CONTEXT_FIELDS = os.getenv("CONTEXT_FIELDS", "content")  # Default to 'content' 
 ############################################
 if OPENAI_API_KEY:
     logger.info("Using OpenAI")
+    obscured_api_key = OPENAI_API_KEY[:4] + "*" * (len(OPENAI_API_KEY) - 8) + OPENAI_API_KEY[-4:]
+    logger.info(f"OpenAI API Key: {obscured_api_key}")
+    if OPENAI_BASE_URL:
+        logger.info(f"OpenAI Base URL: {OPENAI_BASE_URL}")
+    assert OPENAI_MODEL, "OPENAI_MODEL environment variable is not set"
     AZURE_OPENAI_DEPLOYMENT_NAME = OPENAI_MODEL
     if OPENAI_BASE_URL:
+
         client = openai.Client(api_key=OPENAI_API_KEY)
         client.base_url = OPENAI_BASE_URL
+        chat_completion = client.chat.completions.create(
+            model="gpt-4o", 
+            messages=[
+                {"role": "user", "content": "Hello world"}
+                ]
+        )
+        print(chat_completion)
     else:
         client = openai.Client(api_key=OPENAI_API_KEY)
 else:
