@@ -48,7 +48,7 @@ import argparse
 import pprint
 from dotenv import load_dotenv
 from openai import AzureOpenAI
-
+from openai import OpenAI
 
 ############################################
 # OpenTelemetry setup
@@ -91,6 +91,9 @@ for submodule in iter_modules(getattr(llm_functions,"__path__")):
 load_dotenv(dotenv_path="./config/.env", override=True)
 
 ASSISTANT_NAME = os.getenv("ASSISTANT_NAME")
+OPENAI_MODEL = os.getenv("OPENAI_MODEL")
+OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
+OPENAI_ENDPOINT = os.getenv("OPENAI_ENDPOINT")
 AZURE_OPENAI_ENDPOINT = os.getenv("AZURE_OPENAI_ENDPOINT")
 AZURE_OPENAI_API_KEY = os.getenv("AZURE_OPENAI_API_KEY")
 AZURE_OPENAI_DEPLOYMENT_NAME = os.getenv("AZURE_OPENAI_DEPLOYMENT_NAME")
@@ -101,6 +104,18 @@ CONTEXT_FIELDS = os.getenv("CONTEXT_FIELDS", "content")  # Default to 'content' 
 ############################################
 # Azure OpenAI setup
 ############################################
+if OPENAI_API_KEY:
+    AZURE_OPENAI_DEPLOYMENT_NAME = OPENAI_MODEL
+    if OPENAI_ENDPOINT:
+        client = OpenAI(api_key=OPENAI_API_KEY, api_base=OPENAI_ENDPOINT)
+    else:
+        client = OpenAI(api_key=OPENAI_API_KEY)
+else:
+    client = AzureOpenAI(
+        azure_endpoint=AZURE_OPENAI_ENDPOINT,
+        api_version=AZURE_OPENAI_API_VERSION,
+        api_key=AZURE_OPENAI_API_KEY
+    )
 client = AzureOpenAI(azure_endpoint=AZURE_OPENAI_ENDPOINT,
 api_version=AZURE_OPENAI_API_VERSION,
 api_key=AZURE_OPENAI_API_KEY)
@@ -198,11 +213,11 @@ def chat(user_input):
 
 
             ############################
-            # Improve tracing
+            # LAB: Improve tracing
             ############################
             # Hint: Add a manual span for each function call
-            with tracer.start_as_current_span(function_name):
-            #if True: # this is a placeholder for the manual span comment this if you uncomment the trace line
+            #with tracer.start_as_current_span(function_name):
+            if True: # this is a placeholder for the manual span comment this if you uncomment the trace line
                 function = function_functions[function_name]
                 response = function(**function_args)
             messages.append(
@@ -229,7 +244,7 @@ def chat(user_input):
             user_response = choice.message.content
 
             ############################
-            # Audit log
+            # LAB: Audit log
             ############################
             # Hint: Log the user's input and the response for auditing purposes
             # Look at what is available to log and create a rich audit log
@@ -248,7 +263,7 @@ def chat(user_input):
             logger.info(audit_message,extra=audit_context)
 
             ############################
-            # Add events to the trace
+            # LAB: Add events to the trace
             ############################
             # Another way to pass etra information is to us events on the span
             # This is very similar to writing a log but is specific to otel
@@ -358,19 +373,6 @@ def main():
                 current_span.add_event("This is a span event")
                 assistant_response = chat(user_input)
                 print_pretty_response(assistant_response)
-
-            # # Capture token count for cost management
-            # token_count = len(assistant_response.split())
-
-            # # Audit log data
-            # audit_data = {
-            #     "user_name": user_name,
-            #     "question": user_input,
-            #     "answer": assistant_response,
-            #     "document_used": document_id,
-            #     "model": AZURE_OPENAI_DEPLOYMENT_NAME,
-            #     "token_count": 0
-            #}
 
 
 if __name__ == "__main__":
