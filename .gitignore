@@ -8,3 +8,4 @@ environments/*
 !environments/README.md
 config/*
 !README.md
+.DS_Store

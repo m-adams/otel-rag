@@ -48,7 +48,7 @@ import argparse
 import pprint
 from dotenv import load_dotenv
 from openai import AzureOpenAI
-from openai import OpenAI
+import openai
 
 ############################################
 # OpenTelemetry setup
@@ -93,7 +93,7 @@ load_dotenv(dotenv_path="./config/.env", override=True)
 ASSISTANT_NAME = os.getenv("ASSISTANT_NAME")
 OPENAI_MODEL = os.getenv("OPENAI_MODEL")
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
-OPENAI_ENDPOINT = os.getenv("OPENAI_ENDPOINT")
+OPENAI_BASE_URL = os.getenv("OPENAI_BASE_URL")
 AZURE_OPENAI_ENDPOINT = os.getenv("AZURE_OPENAI_ENDPOINT")
 AZURE_OPENAI_API_KEY = os.getenv("AZURE_OPENAI_API_KEY")
 AZURE_OPENAI_DEPLOYMENT_NAME = os.getenv("AZURE_OPENAI_DEPLOYMENT_NAME")
@@ -108,11 +108,12 @@ CONTEXT_FIELDS = os.getenv("CONTEXT_FIELDS", "content")  # Default to 'content' 
 if OPENAI_API_KEY:
     logger.info("Using OpenAI")
     AZURE_OPENAI_DEPLOYMENT_NAME = OPENAI_MODEL
-    if OPENAI_ENDPOINT:
-        client = OpenAI(api_key=OPENAI_API_KEY)
-        client.api_base = OPENAI_ENDPOINT
+    if OPENAI_BASE_URL:
+        client = openai.Client(api_key=OPENAI_API_KEY)
+        client.base_url = OPENAI_BASE_URL
+        print(chat_completion)
     else:
-        client = OpenAI(api_key=OPENAI_API_KEY)
+        client = openai.Client(api_key=OPENAI_API_KEY)
 else:
     logger.info("Using Azure OpenAI")
     client = AzureOpenAI(
