@@ -111,7 +111,6 @@ if OPENAI_API_KEY:
     if OPENAI_BASE_URL:
         client = openai.Client(api_key=OPENAI_API_KEY)
         client.base_url = OPENAI_BASE_URL
-        print(chat_completion)
     else:
         client = openai.Client(api_key=OPENAI_API_KEY)
 else:
