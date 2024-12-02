@@ -123,7 +123,6 @@ if OPENAI_API_KEY:
                 {"role": "user", "content": "Hello world"}
                 ]
         )
-        print(chat_completion)
     else:
         client = openai.Client(api_key=OPENAI_API_KEY)
 else:
