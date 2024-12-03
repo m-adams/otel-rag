@@ -269,7 +269,8 @@ def chat(user_input):
 
             audit_message = f'User {user_name} asked {user_input}'
             audit_context = {}
-            audit_context['reply'] = response
+            audit_context['user_name'] = user_name
+            audit_context['reply'] = user_response
             audit_context['query'] = user_input
             audit_context['doc_references'] = [] # Hint scroll up
             # TODO: maybe we should add more info about the model used and tokens?
