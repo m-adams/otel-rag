@@ -271,7 +271,8 @@ def chat(user_input):
             audit_context = {}
             audit_context['reply'] = response
             audit_context['query'] = user_input
-            audit_context['doc_references'] = []
+            audit_context['doc_references'] = [] # Hint scroll up
+            # TODO: maybe we should add more info about the model used and tokens?
 
             logger.info(audit_message,extra=audit_context)
 
