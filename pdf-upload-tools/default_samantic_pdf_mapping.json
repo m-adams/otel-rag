@@ -45,7 +45,7 @@
       },
       "content": {
         "type": "semantic_text",
-        "inference_id": ".elser-2"
+        "inference_id": "my-elser-endpoint"
       }
     }
   }
