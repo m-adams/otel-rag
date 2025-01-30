@@ -40,4 +40,4 @@ opentelemetry-bootstrap --action=install
 pip uninstall -y opentelemetry-instrumentation-elasticsearch
 
 
-cp -rn ./example-config/.* ./example-config/* ./config/
+cp -rn ./example-config/.*  ./config/
