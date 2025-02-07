@@ -39,5 +39,5 @@ opentelemetry-bootstrap --action=install
 # Elasticsearch is now natively supported so this causes a warning message
 pip uninstall -y opentelemetry-instrumentation-elasticsearch
 
-
-cp -rn ./example-config/.*  ./config/
+cp -n ./example-config/.env ./config/
+cp -n ./example-config/* ./config/
